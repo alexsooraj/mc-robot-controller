@@ -4,6 +4,7 @@ import { MqttService } from './services/mqtt.service';
 import { BehaviorSubject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { MqttModule } from 'ngx-mqtt';
+import { StorageService } from './services/storage.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
 
   mqttConnectionStatus: boolean = false;
 
-  constructor(private mqtt: MqttService) {
+  constructor(private mqtt: MqttService, private storage: StorageService) {
     mqtt.connectionStatusSubject.subscribe(status => {
       this.mqttConnectionStatus = status
     });
@@ -36,6 +37,15 @@ export class AppComponent implements OnInit {
     setInterval(() => {
       this.sendMsg();
     }, 50);
+  }
+
+  showPrompt() {
+    const json = this.storage.getValue();
+    const newAddress = prompt('Host address: (Restart required)', json.host);
+    if (newAddress!==null) {
+      json.host = newAddress;
+      this.storage.setValue(json);
+    }
   }
 
   // Capture initial touch position on touchstart
