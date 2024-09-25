@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
   }
 
   sendMsg() {
-    const msg = `{x: ${this.horizontalValue}, y: ${this.verticalValue}}`;
+    const msg = `{"x": ${this.horizontalValue}, "y": ${this.verticalValue}}`;
     if (msg !== this.lastSentMsg) {
       this.lastSentMsg = msg;
       this.mqtt.publishMessage(msg);
