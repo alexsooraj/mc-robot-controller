@@ -21,14 +21,21 @@ export class AppComponent implements OnInit {
   screenHeight: number = window.innerHeight;
   screenWidth: number = window.innerWidth;
 
-  mqttConnectionStatus: BehaviorSubject<boolean>;
+  lastSentMsg = '';
+
+  mqttConnectionStatus: boolean = false;
 
   constructor(private mqtt: MqttService) {
-    this.mqttConnectionStatus = mqtt.connectionStatusSubject;
+    mqtt.connectionStatusSubject.subscribe(status => {
+      this.mqttConnectionStatus = status
+    });
   }
-  
+
   ngOnInit(): void {
     document.querySelector("body")?.requestFullscreen();
+    setInterval(() => {
+      this.sendMsg();
+    }, 50);
   }
 
   // Capture initial touch position on touchstart
@@ -42,6 +49,14 @@ export class AppComponent implements OnInit {
       console.log(`Touch started at X: ${touchX}, Y: ${touchY}`);
       this.calculateVerticalValue(touchY);
       this.calculateHorizontalValue(touchX);
+    }
+  }
+
+  sendMsg() {
+    const msg = `{x: ${this.horizontalValue}, y: ${this.verticalValue}}`;
+    if (msg !== this.lastSentMsg) {
+      this.lastSentMsg = msg;
+      this.mqtt.publishMessage(msg);
     }
   }
 

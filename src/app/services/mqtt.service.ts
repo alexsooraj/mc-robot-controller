@@ -71,14 +71,14 @@ export class MqttService {
     });
   }
 
-  public publishMessage(topic: string, message: string): void {
+  public publishMessage(message: string): void {
     if (this.connectionStatusSubject.getValue()) {
-      this.ngxMqttService.publish(topic, message).subscribe({
+      this.ngxMqttService.publish(this.topic, message).subscribe({
         next: () => {
-          console.log(`Message published to topic ${topic}: ${message}`);
+          console.log(`Message published to topic ${this.topic}: ${message}`);
         },
         error: (error) => {
-          console.error(`Failed to publish message to topic ${topic}:`, error);
+          console.error(`Failed to publish message to topic ${this.topic}:`, error);
         }
       });
     } else {

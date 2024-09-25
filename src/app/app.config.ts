@@ -6,8 +6,8 @@ import { MqttModule } from 'ngx-mqtt';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), importProvidersFrom(MqttModule.forRoot({
-    hostname: 'your-mosquitto-server-url',
-    port: 9001, // WebSocket port (default is 9001)
+    hostname: '192.168.121.177',
+    port: 8080, // WebSocket port (default is 9001)
     path: '/mqtt',
     protocol: 'ws', // Use 'wss' for secure WebSocket connections
   }))]

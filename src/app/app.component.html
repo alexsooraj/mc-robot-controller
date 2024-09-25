@@ -9,6 +9,6 @@
   <p>Accelerator: <b>{{ verticalValue }}</b></p>
   <p>Steering   : <b>{{ horizontalValue }}</b></p>
   <div class="connection-status">
-    <span class="dot" [class.green]="(mqttConnectionStatus | async)"></span>
+    <span class="dot" [class.green]="mqttConnectionStatus"></span>
   </div>
 </div>
